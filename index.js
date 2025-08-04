@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
@@ -16,9 +15,21 @@ app.get('/api/leagues', async (req, res) => {
       headers: { 'x-apisports-key': API_KEY },
     });
     const data = await response.json();
-    res.json(data);
+    res.json(data.response);
   } catch (err) {
-    res.status(500).json({ error: 'API verisi alınamadı' });
+    res.status(500).json({ error: 'Veri alınamadı' });
+  }
+});
+
+app.get('/api/live', async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/fixtures?live=all`, {
+      headers: { 'x-apisports-key': API_KEY },
+    });
+    const data = await response.json();
+    res.json(data.response);
+  } catch (err) {
+    res.status(500).json({ error: 'Canlı skor alınamadı' });
   }
 });
 
