@@ -15,21 +15,24 @@ app.get('/api/leagues', async (req, res) => {
       headers: { 'x-apisports-key': API_KEY },
     });
     const data = await response.json();
-    res.json(data.response);
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ error: 'Veri alınamadı' });
+    res.status(500).json({ error: 'API verisi alınamadı' });
   }
 });
 
-app.get('/api/live', async (req, res) => {
+app.get('/api/players', async (req, res) => {
+  const { team, season } = req.query;
+  if (!team || !season) return res.status(400).json({ error: "Eksik parametre" });
+
   try {
-    const response = await fetch(`${BASE_URL}/fixtures?live=all`, {
-      headers: { 'x-apisports-key': API_KEY },
+    const response = await fetch(`${BASE_URL}/players?team=${team}&season=${season}`, {
+      headers: { 'x-apisports-key': API_KEY }
     });
     const data = await response.json();
-    res.json(data.response);
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ error: 'Canlı skor alınamadı' });
+    res.status(500).json({ error: "Oyuncu verisi alınamadı" });
   }
 });
 
